@@ -154,9 +154,12 @@ export function createHeroScene(canvas, options = {}) {
   const clock = new THREE.Clock()
   let frameId = 0
   let running = true
+  // Accumulated animation time, advanced only while the loop is running so that
+  // pausing (hidden tab) never causes a visible jump on resume.
+  let elapsed = 0
 
   const renderFrame = () => {
-    const elapsed = clock.getElapsedTime()
+    elapsed += clock.getDelta()
 
     pointer.lerp(targetPointer, 0.05)
 
@@ -196,6 +199,7 @@ export function createHeroScene(canvas, options = {}) {
       window.cancelAnimationFrame(frameId)
     } else if (!running) {
       running = true
+      // Discard the time spent hidden before resuming the loop.
       clock.getDelta()
       animate()
     }

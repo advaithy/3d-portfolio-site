@@ -12,9 +12,9 @@ export default function About() {
     >
       <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr]">
         <div className="space-y-5 text-base leading-relaxed text-slate-300">
-          {profile.summary.map((paragraph) => (
+          {profile.summary.map((paragraph, index) => (
             <motion.p
-              key={paragraph.slice(0, 24)}
+              key={index}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
