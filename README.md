@@ -66,7 +66,8 @@ Other useful places:
 - **Colours & fonts** — the `@theme` block in [`src/index.css`](src/index.css).
 - **3D scene** — [`src/three/heroScene.js`](src/three/heroScene.js). Change `PALETTE`,
   `GEOMETRY_FACTORIES` or pass `{ shapeCount }` from
-  [`src/three/HeroCanvas.jsx`](src/three/HeroCanvas.jsx).
+  [`src/three/HeroCanvas.jsx`](src/three/HeroCanvas.jsx), which also re-creates the scene whenever
+  the reduced-motion preference changes.
 - **Static SEO tags & favicon** — [`index.html`](index.html) and `public/favicon.svg`.
 
 ## Environment configuration
@@ -85,7 +86,7 @@ put secrets there.
 src/
 ├── components/   Header, Hero, About, Skills, Projects, Contact, Footer, Section, SocialIcon
 ├── data/         profile.js – all site content
-├── hooks/        usePageMeta.js – per-route document metadata
+├── hooks/        usePageMeta.js, usePrefersReducedMotion.js
 ├── pages/        Home.jsx, NotFound.jsx
 ├── three/        heroScene.js (Three.js scene) and HeroCanvas.jsx (React wrapper)
 ├── App.jsx       Layout and routes

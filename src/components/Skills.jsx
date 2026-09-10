@@ -30,7 +30,7 @@ export default function Skills() {
                   </div>
                   <div
                     className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/10"
-                    role="meter"
+                    role="progressbar"
                     aria-valuenow={skill.level}
                     aria-valuemin={0}
                     aria-valuemax={100}

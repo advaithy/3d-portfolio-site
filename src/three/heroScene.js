@@ -10,11 +10,6 @@ const GEOMETRY_FACTORIES = [
   () => new THREE.TorusKnotGeometry(0.55, 0.18, 96, 16),
 ]
 
-const prefersReducedMotion = () =>
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
 /**
  * Creates the animated hero scene on the supplied canvas.
  *
@@ -22,13 +17,13 @@ const prefersReducedMotion = () =>
  * which keeps the renderer from leaking WebGL contexts across route changes.
  *
  * @param {HTMLCanvasElement} canvas target canvas element
- * @param {{ shapeCount?: number }} [options]
+ * @param {{ shapeCount?: number, reducedMotion?: boolean }} [options] when `reducedMotion` is
+ *   true a single static frame is rendered instead of running the animation loop
  * @returns {() => void} dispose function
  */
 export function createHeroScene(canvas, options = {}) {
-  const { shapeCount = 14 } = options
+  const { shapeCount = 14, reducedMotion = false } = options
   const parent = canvas.parentElement ?? canvas
-  const reducedMotion = prefersReducedMotion()
 
   const scene = new THREE.Scene()
   scene.fog = new THREE.FogExp2(0x05070d, 0.035)

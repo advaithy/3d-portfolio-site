@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { navigation, profile } from '../data/profile'
 
+const CTA = { label: "Let's talk", href: '#contact' }
+const mobileNavigation = [...navigation, CTA]
+
 export default function Header() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -46,10 +49,10 @@ export default function Header() {
         </nav>
 
         <a
-          href="#contact"
+          href={CTA.href}
           className="hidden rounded-full border border-accent-400/50 px-4 py-2 text-sm font-medium text-accent-400 transition-colors hover:bg-accent-400/10 md:inline-block"
         >
-          Let&apos;s talk
+          {CTA.label}
         </a>
 
         <button
@@ -82,7 +85,7 @@ export default function Header() {
             className="overflow-hidden border-t border-white/10 bg-ink-950/95 md:hidden"
           >
             <ul className="container-page flex flex-col py-4 text-sm">
-              {[...navigation, { label: "Let's talk", href: '#contact' }].map((item) => (
+              {mobileNavigation.map((item) => (
                 <li key={item.label}>
                   <a
                     href={item.href}
