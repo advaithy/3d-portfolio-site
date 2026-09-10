@@ -16,8 +16,8 @@ Live sections: hero with an animated WebGL scene, about, skills, projects, conta
 - **Routing** — React Router with a home page and a 404 page.
 - **SEO** — meta, Open Graph and Twitter tags in `index.html` plus a `usePageMeta` hook that keeps
   the title/description in sync per route.
-- **Accessibility** — semantic landmarks, skip link, labelled navigation, ARIA meters for skill
-  bars and visible focus styles.
+- **Accessibility** — semantic landmarks, skip link, labelled navigation, ARIA progress bars for
+  skills and visible focus styles.
 - **Performance** — below-the-fold sections and the Three.js bundle are lazy loaded via
   `React.lazy` / dynamic `import()`.
 
@@ -96,8 +96,16 @@ src/
 ## Deployment
 
 `npm run build` produces a static `dist/` folder that can be hosted on GitHub Pages, Netlify,
-Vercel or any static host. For a sub-path deployment (for example GitHub Pages project sites), set
-`base` in `vite.config.js`; the router already uses `import.meta.env.BASE_URL` as its basename.
+Vercel or any static host.
+
+For a sub-path deployment (for example a GitHub Pages project site served from
+`/3d-portfolio-site/`), build with the `BASE_PATH` variable:
+
+```bash
+BASE_PATH=/3d-portfolio-site/ npm run build
+```
+
+Vite rewrites the asset URLs and the router picks the value up through `import.meta.env.BASE_URL`.
 Because this is a single-page app, configure your host to rewrite unknown paths to `index.html`.
 
 ## License
