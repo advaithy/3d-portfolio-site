@@ -141,6 +141,7 @@ export function createHeroScene(canvas, options = {}) {
     camera.aspect = width / height
     camera.updateProjectionMatrix()
     renderer.setSize(width, height, false)
+    if (reducedMotion) renderer.render(scene, camera)
   }
 
   resize()
@@ -149,7 +150,6 @@ export function createHeroScene(canvas, options = {}) {
     typeof ResizeObserver === 'function' ? new ResizeObserver(resize) : null
   resizeObserver?.observe(parent)
   window.addEventListener('resize', resize)
-  window.addEventListener('pointermove', handlePointerMove, { passive: true })
 
   const clock = new THREE.Clock()
   let frameId = 0
@@ -165,18 +165,16 @@ export function createHeroScene(canvas, options = {}) {
 
     for (const shape of shapes) {
       const { mesh, basePosition, floatSpeed, floatOffset, floatAmplitude, spin } = shape
-      if (!reducedMotion) {
-        mesh.rotation.x += spin.x * 0.01
-        mesh.rotation.y += spin.y * 0.01
-        mesh.rotation.z += spin.z * 0.01
-        mesh.position.y =
-          basePosition.y + Math.sin(elapsed * floatSpeed + floatOffset) * floatAmplitude
-      }
+      mesh.rotation.x += spin.x * 0.01
+      mesh.rotation.y += spin.y * 0.01
+      mesh.rotation.z += spin.z * 0.01
+      mesh.position.y =
+        basePosition.y + Math.sin(elapsed * floatSpeed + floatOffset) * floatAmplitude
     }
 
     group.rotation.y += (pointer.x * 0.45 - group.rotation.y) * 0.04
     group.rotation.x += (-pointer.y * 0.3 - group.rotation.x) * 0.04
-    stars.rotation.y = reducedMotion ? 0 : elapsed * 0.012
+    stars.rotation.y = elapsed * 0.012
     camera.position.x += (pointer.x * 1.4 - camera.position.x) * 0.04
     camera.position.y += (pointer.y * 0.9 - camera.position.y) * 0.04
     camera.lookAt(0, 0, 0)
@@ -190,21 +188,28 @@ export function createHeroScene(canvas, options = {}) {
     renderFrame()
   }
 
-  animate()
+  if (reducedMotion) {
+    // Motion is opted out of: draw a single static frame instead of animating.
+    camera.lookAt(0, 0, 0)
+    renderer.render(scene, camera)
+  } else {
+    window.addEventListener('pointermove', handlePointerMove, { passive: true })
+    animate()
+  }
 
   // Pause the render loop when the tab is hidden to save battery/GPU cycles.
   const handleVisibilityChange = () => {
     if (document.hidden) {
       running = false
       window.cancelAnimationFrame(frameId)
-    } else if (!running) {
+    } else if (!running && !reducedMotion) {
       running = true
       // Discard the time spent hidden before resuming the loop.
       clock.getDelta()
       animate()
     }
   }
-  document.addEventListener('visibilitychange', handleVisibilityChange)
+  if (!reducedMotion) document.addEventListener('visibilitychange', handleVisibilityChange)
 
   return function dispose() {
     running = false

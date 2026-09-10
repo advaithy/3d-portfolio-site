@@ -22,8 +22,14 @@ export default function Home() {
       <Hero />
       <Suspense fallback={<SectionFallback />}>
         <About />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
         <Skills />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
         <Projects />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
         <Contact />
       </Suspense>
     </>
